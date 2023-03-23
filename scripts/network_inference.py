@@ -195,14 +195,16 @@ def network_inference(args):
         kp_coords_wrtNetOutput_asArray,
         kp_coords_gt_wrtNetOutput_asList,
     )
-    belief_maps_overlay.show(title="Belief map output mosaic")
+    print("=====")
+    belief_maps_overlay.save("/home/amabe/check.jpg")
+    #belief_maps_overlay.show(title="Belief map output mosaic") #this line is  goint to show result image
+    print("=====")
 
     # Generate visualization output:  mosaic of belief maps, with keypoints, overlaid on image used for network input
     belief_maps_wrtNetOutput_asListOfPilImages = dream.image_proc.images_from_belief_maps(
         belief_maps_wrtNetOutput_asTensor, normalization_method=6
     )
     blended_array = []
-
     for n in range(len(kp_coords_wrtNetOutput_asArray)):
 
         bm_wrtNetOutput_asPilImage = belief_maps_wrtNetOutput_asListOfPilImages[n]
@@ -228,9 +230,12 @@ def network_inference(args):
     belief_maps_with_kp_overlaid_mosaic = dream.image_proc.mosaic_images(
         blended_array, rows=2, cols=n_cols, fill_color_rgb=(0, 0, 0)
     )
+    """
     belief_maps_with_kp_overlaid_mosaic.show(
         title="Mosaic of belief maps, with keypoints, on original"
     )
+    """
+    belief_maps_with_kp_overlaid_mosaic.save("/home/amabe/check_overlay.jpg")
 
     # Squash belief maps into one combined image
     belief_map_combined_wrtNetOutput_asTensor = belief_maps_wrtNetOutput_asTensor.sum(

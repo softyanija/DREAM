@@ -1,0 +1,12 @@
+!!omap
+- manipulator: !!omap
+  - name: pr2hand
+  - keypoints:
+    - name: r_gripper_r_finger_joint
+      ros_frame: r_gripper_r_finger_joint
+    - name: r_gripper_r_finger_tip_joint
+      ros_frame: r_gripper_r_finger_tip_joint
+    - name: r_gripper_l_finger_joint
+      ros_frame: r_gripper_l_finger_joint
+    - name: r_gripper_l_finger_tip_joint
+      ros_frame: r_gripper_l_finger_tip_joint
