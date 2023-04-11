@@ -26,6 +26,63 @@ import tf
 
 import dream
 
+
+import functools
+from numbers import Integral
+
+
+# RGB order
+flat_colors = {
+    'red': (231, 76, 60),
+    'blue': (52, 152, 219),
+    'green': (46, 204, 113),
+    'yellow': (241, 196, 15),
+    'gray': (149, 165, 166),
+    'silver': (189, 195, 199),
+    'midnight_blue': (44, 62, 80),
+    'purple': (142, 68, 173),
+    'orange': (243, 156, 18),
+    'turquoise': (26, 188, 156),
+    'white': (245, 246, 250),
+    'black': (47, 54, 64),
+    'violet': (155, 89, 182),
+    'brown': (93, 64, 55),
+}
+
+
+@functools.lru_cache(maxsize=None)
+def _voc_colormap(i):
+    r, g, b = 0, 0, 0
+    for j in range(8):
+        if i & (1 << 0):
+            r |= 1 << (7 - j)
+        if i & (1 << 1):
+            g |= 1 << (7 - j)
+        if i & (1 << 2):
+            b |= 1 << (7 - j)
+        i >>= 3
+    return r, g, b
+
+
+def voc_colormap(nlabels, order='rgb'):
+    colors = []
+    for i in range(nlabels):
+        r, g, b = _voc_colormap(i)
+        if order == 'rgb':
+            colors.append([r, g, b])
+        elif order == 'bgr':
+            colors.append([b, g, r])
+    return colors
+
+
+def cmap(value):
+    if isinstance(value, Integral):
+        return _voc_colormap(value)
+    if isinstance(value, str):
+        return flat_colors[value]
+    if isinstance(value, tuple):
+
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # USERS: Please change the ROS topics / frames below as desired.
@@ -137,6 +194,7 @@ class DreamInferenceROS:
 
         # Output names used to look up keypoints in TF tree
         self.keypoint_tf_frames = self.dream_network.ros_keypoint_frames
+        self.keypoint_tf_frames = [name.replace('joint', 'link') for name in self.keypoint_tf_frames]
         print("ROS keypoint frames: {}".format(self.keypoint_tf_frames))
 
         # Define publishers
@@ -166,7 +224,7 @@ class DreamInferenceROS:
         self.camera_pose_tform = TransformStamped()
 
         self.camera_pose_tform.header.frame_id = self.base_tf_frame
-        self.camera_pose_tform.child_frame_id = tform_out_childname
+        self.camera_pose_tform.child_frame_id = 'camera_color_optical_frame'
 
         # Subscriber for camera intrinsics topic
         self.camera_info_sub = rospy.Subscriber(
@@ -297,7 +355,8 @@ class DreamInferenceROS:
                     "white",
                 ]
             else:
-                point_colors = "red"
+                # point_colors = "red"
+                point_colors = [cmap(i + 1) for i in range(self.dream_network.n_keypoints)]
 
             image_overlay = dream.image_proc.overlay_points_on_image(
                 image_raw,
@@ -346,7 +405,7 @@ class DreamInferenceROS:
                     "white",
                 ]
             else:
-                point_colors = "red"
+                point_colors = [cmap(i + 1) for i in range(self.dream_network.n_keypoints)]
 
             kp_belief_overlay = dream.image_proc.overlay_points_on_image(
                 flattened_belief_image_raw_blend,
@@ -447,7 +506,10 @@ class DreamInferenceROS:
             print("3D KP positions:")
             print(kp_positions_to_try)
 
-        pnp_retval, tvec, quat = dream.geometric_vision.solve_pnp(
+        # pnp_retval, tvec, quat = dream.geometric_vision.solve_pnp(
+        #     kp_positions_to_try, kp_projs_raw_to_try, self.camera_K
+        # )
+        pnp_retval, tvec, quat, _ = dream.geometric_vision.solve_pnp_ransac(
             kp_positions_to_try, kp_projs_raw_to_try, self.camera_K
         )
 
