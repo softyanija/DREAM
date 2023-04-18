@@ -2,7 +2,7 @@
 # This work is licensed under the NVIDIA Source Code License - Non-commercial. Full
 # text can be found in LICENSE.md
 
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 import argparse
 import os
@@ -81,7 +81,7 @@ def cmap(value):
     if isinstance(value, str):
         return flat_colors[value]
     if isinstance(value, tuple):
-
+        return value
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
