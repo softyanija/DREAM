@@ -109,7 +109,7 @@ topic_out_keypoint_frame_overlay = "/dream/keypoint_frame_overlay"
 
 # ROS frames for the output of DREAM
 # tform_out_basename is now set by the user - previously was 'dream/base_frame'
-tform_out_childname = "dream/camera_rgb_frame"
+tform_out_childname = "/camera/color/camera_rgb_frame"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
