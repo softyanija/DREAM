@@ -3,3 +3,4 @@ __pycache__/
 training_results/
 data/real
 data/synthetic
+train/
