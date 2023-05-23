@@ -1,0 +1,28 @@
+!!omap
+- manipulator: !!omap
+  - name: pr2hand
+  - keypoints:
+    - name: r_gripper_r_finger_joint
+      ros_frame: r_gripper_r_finger_joint
+    - name: r_gripper_r_finger_tip_joint
+      ros_frame: r_gripper_r_finger_tip_joint
+    - name: r_gripper_l_finger_joint
+      ros_frame: r_gripper_l_finger_joint
+    - name: r_gripper_l_finger_tip_joint
+      ros_frame: r_gripper_l_finger_tip_joint
+    - name: r_gripper_r_keypoint1_joint
+      ros_frame: r_gripper_r_keypoint1_joint
+    - name: r_gripper_l_keypoint1_joint
+      ros_frame: r_gripper_l_keypoint1_joint
+    - name: r_gripper_r_keypoint2_joint
+      ros_frame: r_gripper_r_keypoint2_joint
+    - name: r_gripper_l_keypoint2_joint
+      ros_frame: r_gripper_l_keypoint2_joint
+    - name: r_gripper_r_keypoint3_joint
+      ros_frame: r_gripper_r_keypoint3_joint
+    - name: r_gripper_l_keypoint3_joint
+      ros_frame: r_gripper_l_keypoint3_joint
+    - name: r_gripper_r_keypoint4_joint
+      ros_frame: r_gripper_r_keypoint4_joint
+    - name: r_gripper_l_keypoint4_joint
+      ros_frame: r_gripper_l_keypoint4_joint
