@@ -86,30 +86,31 @@ def cmap(value):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # USERS: Please change the ROS topics / frames below as desired.
+camera_name = "timercam_1"
 
 # ROS topic for listening to RGB images
-image_topic = "/timercam_1/timer_cam_image/image_rect_color"
+image_topic = "/{}/timer_cam_image/image_rect_color".format(camera_name)
 
 # ROS topic for listening to camera intrinsics
-camera_info_topic = "/timercam_1/timer_cam_image/camera_info"
+camera_info_topic = "/{}/timer_cam_image/camera_info".format(camera_name)
 
 # ROS service for sending request to capture frame
-capture_frame_service_topic = "/dream/capture_frame"
+capture_frame_service_topic = "/{}/dream/capture_frame".format(camera_name)
 
 # ROS service for sending request to clear buffer
-clear_buffer_service_topic = "/dream/clear_buffer"
+clear_buffer_service_topic = "/{}/dream/clear_buffer".format(camera_name)
 
 # ROS topics for outputs
-topic_out_net_input_image = "/dream/net_input_image"
-topic_out_keypoint_overlay = "/dream/keypoint_overlay"
-topic_out_belief_maps = "/dream/belief_maps"
-topic_out_keypoint_belief_overlay = "/dream/keypoint_belief_overlay"
-topic_out_keypoint_names = "/dream/keypoint_names"
-topic_out_keypoint_frame_overlay = "/dream/keypoint_frame_overlay"
+topic_out_net_input_image = "/{}/dream/net_input_image".format(camera_name)
+topic_out_keypoint_overlay = "/{}/dream/keypoint_overlay".format(camera_name)
+topic_out_belief_maps = "/{}/dream/belief_maps".format(camera_name)
+topic_out_keypoint_belief_overlay = "/{}/dream/keypoint_belief_overlay".format(camera_name)
+topic_out_keypoint_names = "/{}/dream/keypoint_names".format(camera_name)
+topic_out_keypoint_frame_overlay = "/{}/dream/keypoint_frame_overlay".format(camera_name)
 
 # ROS frames for the output of DREAM
 # tform_out_basename is now set by the user - previously was 'dream/base_frame'
-tform_out_childname = "/timercam_1/timer_cam_image/timecam_1_frame"
+tform_out_childname = "/{}/timer_cam_image/{}_frame".format(camera_name, camera_name)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -743,7 +744,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Initialize ROS node
-    rospy.init_node("dream")
+    rospy.init_node("dream",anonymous=True)
 
     # Create DREAM inference engine
     single_frame_mode = True

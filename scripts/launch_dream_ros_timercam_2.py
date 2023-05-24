@@ -86,30 +86,31 @@ def cmap(value):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # USERS: Please change the ROS topics / frames below as desired.
+camera_name = "timercam_2"
 
 # ROS topic for listening to RGB images
-image_topic = "/timercam_2/timer_cam_image/image_rect_color"
+image_topic = "/{}/timer_cam_image/image_rect_color".format(camera_name)
 
 # ROS topic for listening to camera intrinsics
-camera_info_topic = "/timercam_2/timer_cam_image/camera_info"
+camera_info_topic = "/{}/timer_cam_image/camera_info".format(camera_name)
 
 # ROS service for sending request to capture frame
-capture_frame_service_topic = "/dream/capture_frame"
+capture_frame_service_topic = "/{}/dream/capture_frame".format(camera_name)
 
 # ROS service for sending request to clear buffer
-clear_buffer_service_topic = "/dream/clear_buffer"
+clear_buffer_service_topic = "/{}/dream/clear_buffer".format(camera_name)
 
 # ROS topics for outputs
-topic_out_net_input_image = "/dream/net_input_image"
-topic_out_keypoint_overlay = "/dream/keypoint_overlay"
-topic_out_belief_maps = "/dream/belief_maps"
-topic_out_keypoint_belief_overlay = "/dream/keypoint_belief_overlay"
-topic_out_keypoint_names = "/dream/keypoint_names"
-topic_out_keypoint_frame_overlay = "/dream/keypoint_frame_overlay"
+topic_out_net_input_image = "/{}/dream/net_input_image".format(camera_name)
+topic_out_keypoint_overlay = "/{}/dream/keypoint_overlay".format(camera_name)
+topic_out_belief_maps = "/{}/dream/belief_maps".format(camera_name)
+topic_out_keypoint_belief_overlay = "/{}/dream/keypoint_belief_overlay".format(camera_name)
+topic_out_keypoint_names = "/{}/dream/keypoint_names".format(camera_name)
+topic_out_keypoint_frame_overlay = "/{}/dream/keypoint_frame_overlay".format(camera_name)
 
 # ROS frames for the output of DREAM
 # tform_out_basename is now set by the user - previously was 'dream/base_frame'
-tform_out_childname = "/timercam_2/timer_cam_image/timecam_2_frame"
+tform_out_childname = "/timercam_2/timer_cam_image/{}_frame".format(camera_name)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -224,7 +225,7 @@ class DreamInferenceROS:
         self.camera_pose_tform = TransformStamped()
 
         self.camera_pose_tform.header.frame_id = self.base_tf_frame
-        self.camera_pose_tform.child_frame_id = 'timercam_1_optical_frame'
+        self.camera_pose_tform.child_frame_id = 'timercam_2_optical_frame'
 
         # Subscriber for camera intrinsics topic
         self.camera_info_sub = rospy.Subscriber(
@@ -743,7 +744,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Initialize ROS node
-    rospy.init_node("dream")
+    rospy.init_node("dream",anonymous=True)
 
     # Create DREAM inference engine
     single_frame_mode = True
