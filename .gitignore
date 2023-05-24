@@ -4,3 +4,4 @@ training_results/
 data/real
 data/synthetic
 train/
+trained_models/
